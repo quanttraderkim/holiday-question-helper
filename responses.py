@@ -424,3 +424,54 @@ def get_all_response(category: str, question_key: str, style: str) -> str:
                 return random.choice(responses)
     
     return "적절한 답변을 찾을 수 없습니다."
+
+def customize_response(response: str, user_situation: dict) -> str:
+    """사용자 상황에 맞게 답변 커스터마이징"""
+    
+    # 기본 답변 사용
+    customized = response
+    
+    # 나이 정보가 있으면 활용
+    if "age" in user_situation:
+        age = user_situation["age"]
+        if age < 25:
+            customized = customized.replace("나이", "아직 젊은 나이")
+        elif age > 35:
+            customized = customized.replace("준비 중", "신중하게 고민 중")
+    
+    # 직업 정보가 있으면 활용
+    if "job" in user_situation:
+        job = user_situation["job"]
+        if job == "학생":
+            customized = customized.replace("일", "공부")
+        elif job == "취준생":
+            customized = customized.replace("열심히", "정말 열심히")
+    
+    # 결혼 여부 정보
+    if "married" in user_situation:
+        if user_situation["married"]:
+            customized = customized.replace("결혼", "재혼")
+    
+    return customized
+
+def get_similar_questions(category: str, question: str) -> list:
+    """카테고리 내 유사한 질문들 추천"""
+    
+    if category not in ALL_RESPONSES:
+        return []
+    
+    questions = list(ALL_RESPONSES[category].keys())
+    
+    # 현재 질문 제외
+    similar = [q for q in questions if q != question]
+    
+    return similar[:3]  # 최대 3개 반환
+
+def get_question_examples() -> dict:
+    """각 카테고리별 예시 질문 반환"""
+    examples = {}
+    
+    for category, responses in ALL_RESPONSES.items():
+        examples[category] = list(responses.keys())
+    
+    return examples
