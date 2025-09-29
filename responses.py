@@ -467,7 +467,7 @@ def get_similar_questions(category: str, question: str) -> list:
     
     return similar[:3]  # 최대 3개 반환
 
-def get_question_examples() -> dict:
+def get_all_question_examples() -> dict:
     """각 카테고리별 예시 질문 반환"""
     examples = {}
     

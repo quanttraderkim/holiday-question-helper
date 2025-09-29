@@ -26,7 +26,7 @@ from responses import (
     get_all_response,
     customize_response,
     get_similar_questions,
-    get_question_examples
+    get_all_question_examples
 )
 
 # 검증 함수들
@@ -391,7 +391,7 @@ def get_question_examples() -> Dict[str, Any]:
         dict: 카테고리별 예시 질문 목록
     """
     try:
-        examples = get_question_examples()
+        examples = get_all_question_examples()
         
         result = {
             "categories": {},

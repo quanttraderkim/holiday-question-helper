@@ -10,7 +10,7 @@ from responses import (
     get_all_response,
     customize_response,
     get_similar_questions,
-    get_question_examples,
+    get_all_question_examples,
     ALL_RESPONSES,
     QUESTION_CATEGORIES,
     RESPONSE_STYLES
@@ -74,7 +74,7 @@ def test_all_functions():
     # 테스트 5: 예시 질문 조회
     print("\n[테스트 5] 예시 질문 조회")
     try:
-        examples = get_question_examples()
+        examples = get_all_question_examples()
         assert isinstance(examples, dict)
         assert len(examples) > 0
         print("✅ 통과")
