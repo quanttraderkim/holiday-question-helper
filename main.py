@@ -5,9 +5,17 @@ Holiday Question Helper MCP Server
 명절 질문 답변 생성기
 """
 
+import logging
 from datetime import datetime
-from typing import Dict, Any
+from typing import Dict, Any, Optional, Tuple
 from fastmcp import FastMCP
+
+# 로깅 설정
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
 from responses import (
     QUESTION_CATEGORIES,
     RESPONSE_STYLES,
@@ -20,6 +28,25 @@ from responses import (
     get_similar_questions,
     get_question_examples
 )
+
+# 검증 함수들
+def validate_style(style: str) -> Tuple[bool, str]:
+    """스타일 유효성 검증"""
+    if style not in RESPONSE_STYLES:
+        return False, f"지원하지 않는 스타일입니다. 사용 가능: {', '.join(RESPONSE_STYLES.keys())}"
+    return True, ""
+
+def validate_category(category: str) -> Tuple[bool, str]:
+    """카테고리 유효성 검증"""
+    if category not in QUESTION_CATEGORIES and category != "auto":
+        return False, f"지원하지 않는 카테고리입니다. 사용 가능: {', '.join(QUESTION_CATEGORIES.keys())}, auto"
+    return True, ""
+
+def sanitize_input(text: str) -> str:
+    """입력값 정제"""
+    if not text or not isinstance(text, str):
+        return ""
+    return text.strip()[:500]  # 최대 500자로 제한
 
 # FastMCP 서버 초기화
 mcp = FastMCP("Holiday Question Helper")
@@ -47,10 +74,19 @@ def generate_marriage_response(
     """
     try:
         # 입력 검증
-        if style not in RESPONSE_STYLES:
+        question = sanitize_input(question)
+        if not question:
             return {
                 "error": "입력 오류",
-                "message": f"지원하지 않는 스타일입니다. 사용 가능: {', '.join(RESPONSE_STYLES.keys())}",
+                "message": "질문을 입력해주세요.",
+                "timestamp": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+            }
+        
+        is_valid, error_msg = validate_style(style)
+        if not is_valid:
+            return {
+                "error": "입력 오류",
+                "message": error_msg,
                 "timestamp": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
             }
         

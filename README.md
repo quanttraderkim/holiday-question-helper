@@ -69,6 +69,27 @@ generate_multiple_responses(
 get_question_examples()
 ```
 
+## 배포 정보
+
+- **GitHub**: https://github.com/quanttraderkim/holiday-question-helper
+- **FastMCP Cloud**: https://holiday-question-helper.fastmcp.app/mcp
+- **카카오 Play MCP**: 등록 준비 완료
+
+## 문서
+
+- [사용자 가이드](USER_GUIDE.md) - 상세한 사용법과 팁
+- [카카오 Play MCP 등록 정보](PLAY_MCP_INFO.md) - 배포 정보
+
+## 테스트
+
+```bash
+# 전체 기능 테스트
+python test_all.py
+
+# 개발 서버 실행
+fastmcp dev main.py
+```
+
 ## 주의사항
 
 ⚠️ 이 도구는 유머를 위한 것입니다. 실제 가족 모임에서는 상황과 관계를 고려해서 적절히 사용하세요.
